@@ -1,0 +1,9 @@
+gradio
+pandas
+boto3
+chromadb
+sentence-transformers
+langchain-core
+fastapi
+uvicorn
+python-multipart
