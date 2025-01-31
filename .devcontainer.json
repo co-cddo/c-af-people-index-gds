@@ -1,0 +1,33 @@
+{
+	"name" : "people-index",
+	"build": {
+	"dockerfile": "Dockerfile",
+	"args": {
+	"local_config": "true"
+	}
+	},
+	"runArgs": ["--name=people-index"],
+	"mounts": [
+	"type=bind,source=${localEnv:HOME}/.aws,target=/workspaces/.aws,consistency=cached"
+	//${localEnv:HOME}/.aws
+	//C:\Users\username\.aws
+	],
+	"customizations": {
+	"vscode": {
+	"extensions": [
+	"ms-python.python",
+	"ms-toolsai.jupyter"
+	]
+	}
+	},
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"containerEnv": {
+	"AWS_CONFIG_FILE": "/workspaces/.aws/config",
+	"AWS_SHARED_CREDENTIALS_FILE": "/workspaces/.aws/credentials",
+	"AWS_PROFILE": "default", // Change this to a bedrock user
+	"AWS_REGION": "us-east-1",
+	"PYTHONPATH": "/workspaces/${localWorkspaceFolderBasename}/c-af-people-index-gds:/var/runtime/:/var/task"
+	},
+	"forwardPorts": [7860],
+	"appPort": [7860]
+}
