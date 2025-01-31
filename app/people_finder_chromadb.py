@@ -283,18 +283,29 @@ def create_gradio_interface(finder: PeopleFinder):
                     "Search for people based on their skills, experience, and expertise."
                 )
                 search_input = gr.Textbox(
-                    lines=2,
-                    placeholder="Enter your search query (e.g., 'Looking for people with experience in data science and workforce analytics')",
-                )
+                            lines=2,
+                            placeholder="Enter your search query (e.g., 'Looking for people with experience in data science and workforce analytics')",
+                        )
                 search_button = gr.Button("Search")
-                search_output = gr.Markdown()
+                        
+                with gr.Column() as results_column:
+                    status_text = gr.Markdown("Ready to search...")
+                    search_output = gr.Markdown()
 
-                # Define a wrapper function for the search as gradio wants strings
-                def search_wrapper(query: str) -> str:
-                    return finder.search(query)
+                def search_wrapper(query: str) -> tuple[str, str]:
+                    status = "🔄 Searching profiles..."
+                    
+                    # Do the search
+                    result = finder.search(query)
+                    
+                    status = "✅ Search complete!"
+                    return status, result
 
                 search_button.click(
-                    fn=search_wrapper, inputs=search_input, outputs=search_output
+                    fn=search_wrapper,
+                    inputs=[search_input],
+                    outputs=[status_text, search_output],
+                    show_progress="full"  # This will show a progress indicator
                 )
 
                 # Add in basic examples for search so people have an idea what they can ask
@@ -428,4 +439,4 @@ def create_gradio_interface(finder: PeopleFinder):
 if __name__ == "__main__":
     finder = PeopleFinder("app/profiles.csv")
     interface = create_gradio_interface(finder)
-    interface.launch(server_name="0.0.0.0", server_port=7860, share=False)
+    interface.launch(server_name="0.0.0.0", server_port=7860, share=False, debug=True)
