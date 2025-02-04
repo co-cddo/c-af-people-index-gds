@@ -16,7 +16,8 @@
 	"vscode": {
 	"extensions": [
 	"ms-python.python",
-	"ms-toolsai.jupyter"
+	"ms-toolsai.jupyter",
+	"mechatroner.rainbow-csv"
 	]
 	}
 	},
@@ -28,6 +29,7 @@
 	"AWS_REGION": "us-east-1",
 	"PYTHONPATH": "/workspaces/${localWorkspaceFolderBasename}/c-af-people-index-gds:/var/runtime/:/var/task"
 	},
+	"postCreateCommand": "pip install ipykernel",
 	"forwardPorts": [7860],
 	"appPort": [7860]
 }

@@ -9,8 +9,12 @@ RUN if [[ "$local_config" = "true" ]] ; then yum install -y tar gzip; else echo 
 #WORKDIR /workspace
 #ADD . /workspace
 
+# Install Node.js and npm
 RUN apt-get update && apt-get install -y \
-    gcc
+    gcc \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
 
 RUN mkdir code
 COPY ./app /code
