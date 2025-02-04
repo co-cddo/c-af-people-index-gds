@@ -7,3 +7,6 @@ langchain-core
 fastapi
 uvicorn
 python-multipart
+plotly
+pandas
+nbformat
