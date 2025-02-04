@@ -271,11 +271,116 @@ class PeopleFinder:
             print(f"Error getting profile count: {e}")
             return 0
 
+    # Get data ready for sunburst chart
+    def generate_org_chart_data(self):
+        # Create a hierarchical structure
+        org_hierarchy = {
+            "SCS3": {"SCS2": {"SCS1": {"G6": {"G7": {"SEO": {"HEO": {}}}}}}}
+        }
+
+        # Setup data for sunburst chart
+        labels = ["SCS3"]  # Start with SCS3 Government Chief Digital Officer
+        parents = [""]  # SCS3 has no parent
+        values = [1]
+
+        # Process each profile and add to the hierarchy
+        for _, row in self.profiles_df.iterrows():
+            grade = row["grade"]
+
+            # Determine level and add to appropriate lists
+            if grade == "SCS3":  # CEO level
+                if "SCS3" not in labels:
+                    labels.append("SCS3")
+                    parents.append("")  # Top level has no parent
+                    values.append(1)
+            elif grade == "SCS2":  # Director level
+                if "SCS2" not in labels:
+                    labels.append("SCS2")
+                    parents.append("SCS3")
+                    values.append(1)
+            elif grade == "SCS1":  # Deputy Director level
+                if "SCS1" not in labels:
+                    labels.append("SCS1")
+                    parents.append("SCS2")
+                    values.append(1)
+            elif grade == "G6":  # Head of
+                if "G6" not in labels:
+                    labels.append("G6")
+                    parents.append("SCS1")
+                    values.append(1)
+            elif grade == "G7":
+                if "G7" not in labels:
+                    labels.append("G7")
+                    parents.append("G6")
+                    values.append(1)
+            elif grade == "SEO":
+                if "SEO" not in labels:
+                    labels.append("SEO")
+                    parents.append("G7")
+                    values.append(1)
+
+        return labels, parents, values
+    
+    def welcome(self, name):
+        return f"Welcome to Gradio, {name}!"
+
+
+
+
 
 def create_gradio_interface(finder: PeopleFinder):
-    with gr.Blocks() as interface:
-        gr.Markdown("# People Finder")
+    
+    js = """
+        function() {
+                // Load required scripts
+                function loadScript(url) {
+                    var script = document.createElement('script');
+                    script.src = url;
+                    document.head.appendChild(script);
+                }
 
+                loadScript('https://d3js.org/d3.v7.min.js');
+                loadScript('https://cdn.jsdelivr.net/npm/d3-org-chart@2');
+                loadScript('https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js');
+            
+            
+                function createGradioAnimation() {
+                    var container = document.createElement('div');
+                    container.id = 'gradio-animation';
+                    container.style.fontSize = '2em';
+                    container.style.fontWeight = 'bold';
+                    container.style.textAlign = 'center';
+                    container.style.marginBottom = '20px';
+
+                    var text = 'Welcome to the People Finder!';
+                    for (var i = 0; i < text.length; i++) {
+                        (function(i){
+                            setTimeout(function(){
+                                var letter = document.createElement('span');
+                                letter.style.opacity = '0';
+                                letter.style.transition = 'opacity 0.5s';
+                                letter.innerText = text[i];
+
+                                container.appendChild(letter);
+
+                                setTimeout(function() {
+                                    letter.style.opacity = '1';
+                                }, 50);
+                            }, i * 250);
+                        })(i);
+                    }
+
+                    var gradioContainer = document.querySelector('.gradio-container');
+                    gradioContainer.insertBefore(container, gradioContainer.firstChild);
+
+                    return 'Animation created';
+                }
+                
+                createGradioAnimation();
+            }
+    """
+        
+    with gr.Blocks(js=js) as interface:
         with gr.Tabs():
             # Search Tab
             with gr.TabItem("Search Profiles"):
@@ -323,7 +428,29 @@ def create_gradio_interface(finder: PeopleFinder):
                     ],
                     inputs=search_input,
                 )
-
+                
+            with gr.TabItem("Organization Chart"):
+                
+                # Super simple test to check javascript works and interacts with html console (it doesn't)
+                org_chart_html = """
+                <div style="background-color: yellow; padding: 20px; margin: 20px;">
+                    Hello World
+                </div>
+                <div id="test-div" style="background-color: lightblue; padding: 20px; margin: 20px;">
+                    Click me!
+                </div>
+                <script>
+                    document.getElementById('test-div').addEventListener('click', function() {
+                        this.style.backgroundColor = 'pink';
+                        console.log('Div clicked!');
+                    });
+                    console.log('Script loaded');
+                </script>
+                """
+                
+                gr.HTML(org_chart_html)
+                
+                
             # Profile Management Tab - users can update their info
             with gr.TabItem("Manage Profile"):
                 gr.Markdown("Add or update employee profiles")
@@ -439,4 +566,4 @@ def create_gradio_interface(finder: PeopleFinder):
 if __name__ == "__main__":
     finder = PeopleFinder("app/profiles.csv")
     interface = create_gradio_interface(finder)
-    interface.launch(server_name="0.0.0.0", server_port=7860, share=False, debug=False)
+    interface.launch(server_name="0.0.0.0", server_port=7860, share=False, debug=True, allowed_paths=[".*"])
