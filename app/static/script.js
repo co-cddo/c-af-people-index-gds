@@ -39,7 +39,7 @@ fetch('/api/org-data')
                  d.data.name
                } </div>
                <div style="color:#404040;font-size:16px;margin-top:4px"> ${
-                 d.data.positionName
+                 d.data.job_title
                } </div>
            </div> 
            <div style="display:flex;justify-content:space-between;padding-left:15px;padding-right:15px;">

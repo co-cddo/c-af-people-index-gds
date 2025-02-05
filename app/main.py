@@ -36,11 +36,16 @@ async def visualization_page(request: Request):
 @app.get("/api/org-data")
 async def get_org_data():
     df = pd.read_csv(
-        "org.csv",
+        "profiles.csv",
+        # id,parentId, name,email,job_title,grade,location,team,area,unit,directorate,department,skills,experience
         dtype={
             "id": str,
             "parentId": str,
             "name": str,
+            "email": str,
+            "grade": str,
+            "location": str,
+            "team": str,
             "imageUrl": str,
             "title": str,
             "department": str,
