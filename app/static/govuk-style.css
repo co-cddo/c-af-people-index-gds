@@ -1,0 +1,85 @@
+/* GOV.UK colors */
+:root {
+    --govuk-blue: #1d70b8;
+    --govuk-dark-blue: #003078;
+    --govuk-light-blue: #5694ca;
+    --govuk-black: #0b0c0c;
+    --govuk-white: #ffffff;
+    --govuk-grey: #626a6e;
+    --govuk-light-grey: #f3f2f1;
+    --govuk-yellow: #ffdd00;
+    --govuk-font: "GDS Transport", arial, sans-serif;
+}
+
+/* Base styles */
+body {
+    font-family: var(--govuk-font);
+    color: var(--govuk-black);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.gradio-button {
+    background-color: var(--govuk-blue);
+    color: var(--govuk-white);
+    font-family: var(--govuk-font);
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 15px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    box-shadow: 0 2px 0 var(--govuk-dark-blue);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.gradio-button:hover {
+    background-color: var(--govuk-dark-blue);
+}
+
+/* Text inputs */
+.gradio-textbox {
+    border: 2px solid var(--govuk-black);
+    padding: 5px;
+    font-family: var(--govuk-font);
+    font-size: 16px;
+}
+
+.gradio-textbox:focus {
+    outline: 3px solid var(--govuk-yellow);
+    outline-offset: 0;
+}
+
+/* Labels */
+.gradio-label {
+    font-family: var(--govuk-font);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* Error messages */
+.gradio-error {
+    color: #d4351c;
+    font-weight: 700;
+    border-left: 5px solid #d4351c;
+    padding-left: 15px;
+}
+
+/* Success messages */
+.gradio-success {
+    color: #00703c;
+    font-weight: 700;
+    border-left: 5px solid #00703c;
+    padding-left: 15px;
+}
