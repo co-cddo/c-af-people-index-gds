@@ -1,13 +1,10 @@
 import json
 import os
-from typing import List
 
 import boto3
-import gradio as gr
 import pandas as pd
 from chromadb import Client, Settings
 from chromadb.utils import embedding_functions
-from langchain_core.documents import Document
 
 
 class PeopleFinder:
@@ -271,68 +268,3 @@ class PeopleFinder:
         except Exception as e:
             print(f"Error getting profile count: {e}")
             return 0
-
-    # Get data ready for sunburst chart
-    def generate_org_chart_data(self):
-        # Create a hierarchical structure
-        org_hierarchy = {
-            "SCS3": {"SCS2": {"SCS1": {"G6": {"G7": {"SEO": {"HEO": {}}}}}}}
-        }
-
-        # Setup data for sunburst chart
-        labels = ["SCS3"]  # Start with SCS3 Government Chief Digital Officer
-        parents = [""]  # SCS3 has no parent
-        values = [1]
-
-        # Process each profile and add to the hierarchy
-        for _, row in self.profiles_df.iterrows():
-            grade = row["grade"]
-
-            # Determine level and add to appropriate lists
-            if grade == "SCS3":  # CEO level
-                if "SCS3" not in labels:
-                    labels.append("SCS3")
-                    parents.append("")  # Top level has no parent
-                    values.append(1)
-            elif grade == "SCS2":  # Director level
-                if "SCS2" not in labels:
-                    labels.append("SCS2")
-                    parents.append("SCS3")
-                    values.append(1)
-            elif grade == "SCS1":  # Deputy Director level
-                if "SCS1" not in labels:
-                    labels.append("SCS1")
-                    parents.append("SCS2")
-                    values.append(1)
-            elif grade == "G6":  # Head of
-                if "G6" not in labels:
-                    labels.append("G6")
-                    parents.append("SCS1")
-                    values.append(1)
-            elif grade == "G7":
-                if "G7" not in labels:
-                    labels.append("G7")
-                    parents.append("G6")
-                    values.append(1)
-            elif grade == "SEO":
-                if "SEO" not in labels:
-                    labels.append("SEO")
-                    parents.append("G7")
-                    values.append(1)
-
-        return labels, parents, values
-
-    def welcome(self, name):
-        return f"Welcome to Gradio, {name}!"
-
-
-if __name__ == "__main__":
-    finder = PeopleFinder("app/profiles.csv")
-    interface = create_gradio_interface(finder)
-    interface.launch(
-        server_name="0.0.0.0",
-        server_port=7860,
-        share=False,
-        debug=True,
-        allowed_paths=[".*"],
-    )
