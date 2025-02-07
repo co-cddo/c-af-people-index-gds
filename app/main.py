@@ -1,4 +1,5 @@
 import gradio as gr
+import pandas as pd
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -40,6 +41,31 @@ async def manage_page(request: Request):
             "gradio_url": "/gradio-manage",
         },
     )
+
+
+@app.get("/api/org-data")
+async def get_org_data():
+    df = pd.read_csv(
+        "profiles.csv",
+        # id,parentId, name,email,job_title,grade,location,team,area,unit,directorate,department,skills,experience
+        dtype={
+            "id": str,
+            "parentId": str,
+            "name": str,
+            "email": str,
+            "grade": str,
+            "location": str,
+            "team": str,
+            "imageUrl": str,
+            "title": str,
+            "department": str,
+        },
+        na_values=[""],
+        keep_default_na=False,
+    )
+    df = df.replace({float("nan"): None})
+    data = df.to_dict("records")
+    return data
 
 
 # Your existing org chart route
