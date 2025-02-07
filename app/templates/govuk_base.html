@@ -13,6 +13,7 @@
     <link rel="manifest" href="/assets/manifest.json">
     <link href="{{ url_for('static', path='govuk/govuk-frontend.min.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', path='govuk/govuk-frontend.min.js') }}"></script>
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body class="govuk-template__body">
@@ -22,13 +23,9 @@
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <header class="govuk-header" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
-            <div class="govuk-header__logo">
-                <a href="/" class="govuk-header__link govuk-header__link--homepage">
-                </a>
-            </div>
             <div class="govuk-header__content">
                 <a href="/" class="govuk-header__link govuk-header__service-name">
-                    People Finder
+                    νPeople Finder
                 </a>
                 <nav aria-label="Menu" class="govuk-header__navigation">
                     <ul id="navigation" class="govuk-header__navigation-list">
@@ -50,9 +47,7 @@
     <div class="govuk-width-container">
         <main class="govuk-main-wrapper" id="main-content">
             {% block content %}
-            <div class="gradio-container">
-                <iframe src="{{ gradio_url }}" frameborder="0" style="width: 100%; min-height: 800px;"></iframe>
-            </div>
+
             {% endblock %}
         </main>
     </div>
@@ -82,7 +77,9 @@
             </div>
         </div>
     </footer>
+
     <script type="module" src="{{ url_for('static', path='govuk/govuk-frontend.min.js') }}"></script>
+    {% block extra_footer %}{% endblock %}
     <script>
         window.GOVUKFrontend.initAll()
     </script>
