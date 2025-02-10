@@ -3,30 +3,38 @@ from people_finder_chromadb import PeopleFinder
 
 
 def search_profile_interface(finder: PeopleFinder) -> gr.Blocks:
-    with gr.Blocks(css="static/govuk-style.css") as interface:
+    with gr.Blocks() as interface:
         gr.Markdown(
-            """
-            # People Finder
-            Search for people based on their skills, experience, and expertise.
-            """,
-            elem_classes=["govuk-heading-xl"],
+            "Search for people based on their skills, experience, and expertise."
+        )
+        search_input = gr.Textbox(
+            lines=2,
+            placeholder="Enter your search query (e.g., 'Looking for people with experience in data science and workforce analytics')",
+        )
+        search_button = gr.Button("Search")
+
+        with gr.Column() as results_column:
+            status_text = gr.Markdown("Ready to search...")
+            search_output = gr.Markdown()
+
+        def search_wrapper(query: str) -> tuple[str, str]:
+            status = "🔄 Searching profiles..."
+
+            # Do the search
+            print("searching")
+            result = finder.search(query)
+
+            status = "✅ Search complete!"
+            return status, result
+
+        search_button.click(
+            fn=search_wrapper,
+            inputs=[search_input],
+            outputs=[status_text, search_output],
+            show_progress="full",  # This will show a progress indicator
         )
 
-        with gr.Group(elem_classes=["govuk-form-group"]):
-            search_input = gr.Textbox(
-                lines=2,
-                placeholder="Enter your search query...",
-                label="Search query",
-                elem_classes=["govuk-input"],
-            )
-            search_button = gr.Button("Search", elem_classes=["govuk-button"])
-
-        with gr.Column(elem_classes=["govuk-grid-column-two-thirds"]) as results_column:
-            status_text = gr.Markdown("Ready to search...", elem_classes=["govuk-body"])
-            search_output = gr.Markdown(elem_classes=["govuk-body"])
-
-        # Example section
-        gr.Markdown("### Example searches", elem_classes=["govuk-heading-m"])
+        # Add in basic examples for search so people have an idea what they can ask
         gr.Examples(
             examples=[
                 [

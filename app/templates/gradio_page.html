@@ -1,11 +1,13 @@
 {% extends "govuk_base.html" %}
+{% block extra_head %}
+<script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.42.0/gradio.js"></script>
+{% endblock %}
 
 {% block content %}
 <h1 class="govuk-heading-xl">{{ title }}</h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <iframe id="myIframe" src="{{ gradio_url }}" frameborder="0" style="width: 100%; display: block;">
-        </iframe>
+        <gradio-app src="http://127.0.0.1:8000{{ gradio_url }}" shadowDOM="false"></gradio-app></gradio-app>
     </div>
 </div>
 
@@ -13,18 +15,6 @@
 {% endblock %}
 
 {% block extra_footer %}
-<script>
-    function resizeIframe() {
-        const iframe = document.getElementById("myIframe");
-        if (iframe.contentWindow.document.body) {
-            const newHeight = iframe.contentWindow.document.documentElement.scrollHeight + 10; // Add padding
-            iframe.style.height = newHeight + "px";
-        }
-    }
 
-    document.getElementById("myIframe").onload = function () {
-        setTimeout(resizeIframe, 200); // Delay to ensure rendering
-    };
 
-</script>
 {% endblock %}
