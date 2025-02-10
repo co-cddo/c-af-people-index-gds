@@ -27,7 +27,12 @@ app = gr.mount_gradio_app(app, manage_interface, path="/gradio-manage")
 async def search_page(request: Request):
     return templates.TemplateResponse(
         "gradio_page.html",
-        {"request": request, "title": "Search People", "gradio_url": "/gradio-search"},
+        {
+            "request": request,
+            "title": "Search People",
+            "gradio_version": gr.__version__,
+            "gradio_url": "/gradio-search",
+        },
     )
 
 
@@ -38,6 +43,7 @@ async def manage_page(request: Request):
         {
             "request": request,
             "title": "Manage Profiles",
+            "gradio_version": gr.__version__,
             "gradio_url": "/gradio-manage",
         },
     )

@@ -19,12 +19,12 @@ def search_profile_interface(finder: PeopleFinder) -> gr.Blocks:
 
         def search_wrapper(query: str) -> tuple[str, str]:
             status = "🔄 Searching profiles..."
-
-            # Do the search
-            print("searching")
-            result = finder.search(query)
-
-            status = "✅ Search complete!"
+            try:
+                result = finder.search(query)
+                status = "✅ Search complete!"
+            except Exception as e:
+                status = f"❌ Error during search: {str(e)}"
+                result = "An error occurred while searching. Please try again."
             return status, result
 
         search_button.click(

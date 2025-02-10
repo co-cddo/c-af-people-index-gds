@@ -1,20 +1,13 @@
 {% extends "govuk_base.html" %}
 {% block extra_head %}
-<script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.42.0/gradio.js"></script>
+<script type="module" src='https://gradio.s3-us-west-2.amazonaws.com/{{ gradio_version }}/gradio.js'></script>
 {% endblock %}
 
 {% block content %}
 <h1 class="govuk-heading-xl">{{ title }}</h1>
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <gradio-app src="http://127.0.0.1:8000{{ gradio_url }}" shadowDOM="false"></gradio-app></gradio-app>
-    </div>
-</div>
-
+<gradio-app src="{{ request.base_url }}{{ gradio_url.lstrip('/') }}"></gradio-app>
 
 {% endblock %}
 
 {% block extra_footer %}
-
-
 {% endblock %}
