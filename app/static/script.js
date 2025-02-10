@@ -30,7 +30,7 @@ fetch('/api/org-data')
              d.data.id
            }</div>
            
-           <div style="margin-top:-30px;background-color:#3AB6E3;height:10px;width:${
+           <div style="margin-top:-30px;background-color:#1d70b8;height:10px;width:${
              d.width - 2
            }px;border-radius:1px"></div>
 

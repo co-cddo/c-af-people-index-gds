@@ -7,7 +7,10 @@
 {% endblock %}
 {% block content %}
 
+
+
 <body>
+    <button class="govuk-button" data-module="govuk-button" onclick="chart.fit()">Fit to the screen</button>
     <div class="chart-container"></div>
     <script src="{{ url_for('static', path='script.js') }}"></script>
 </body>
