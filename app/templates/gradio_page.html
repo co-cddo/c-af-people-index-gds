@@ -1,0 +1,13 @@
+{% extends "govuk_base.html" %}
+{% block extra_head %}
+<script type="module" src='https://gradio.s3-us-west-2.amazonaws.com/{{ gradio_version }}/gradio.js'></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="govuk-heading-xl">{{ title }}</h1>
+<gradio-app src="{{ request.base_url }}{{ gradio_url.lstrip('/') }}"></gradio-app>
+
+{% endblock %}
+
+{% block extra_footer %}
+{% endblock %}
