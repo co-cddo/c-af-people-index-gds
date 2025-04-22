@@ -49,10 +49,11 @@ class PeopleFinder:
                     "name",
                     "email",
                     "job_title",
+                    "grade",
+                    "location",
                     "department",
-                    "team",
                     "skills",
-                    "experience",
+                    "help",
                 ]
             )
             self.profiles_df.to_csv(self.csv_path, index=False)
@@ -78,10 +79,11 @@ class PeopleFinder:
                 Name: {row["name"]}
                 Email: {row["email"]}
                 Title: {row["job_title"]}
+                Grade: {row["grade"]}
+                Location: {row["location"]}
                 Department: {row["department"]}
-                Team: {row["team"]}
                 Skills: {row["skills"]}
-                Experience: {row["experience"]}
+                Help: {row["help"]}
                 """.strip()
 
                 documents.append(text)
@@ -99,10 +101,11 @@ class PeopleFinder:
         name: str,
         email: str,
         job_title: str,
+        grade: str,
+        location: str,
         department: str,
-        team: str,
         skills: str,
-        experience: str,
+        help: str,
     ) -> str:
         # Email is the unique ID so without it, stop the user updating stuff that exists
         if not email or not email.strip():
@@ -125,23 +128,30 @@ class PeopleFinder:
                     if job_title and job_title.strip()
                     else existing_profile["job_title"]
                 ),
+                "grade": (
+                    grade.strip()
+                    if grade and grade.strip()
+                    else existing_profile["grade"]
+                ),
+                "location": (
+                    location.strip()
+                    if location and location.strip()
+                    else existing_profile["location"]
+                ),
                 "department": (
                     department.strip()
                     if department and department.strip()
                     else existing_profile["department"]
-                ),
-                "team": (
-                    team.strip() if team and team.strip() else existing_profile["team"]
                 ),
                 "skills": (
                     skills.strip()
                     if skills and skills.strip()
                     else existing_profile["skills"]
                 ),
-                "experience": (
-                    experience.strip()
-                    if experience and experience.strip()
-                    else existing_profile["experience"]
+                "help": (
+                    help.strip()
+                    if help and help.strip()
+                    else existing_profile["help"]
                 ),
             }
 
@@ -160,10 +170,11 @@ class PeopleFinder:
                 "name": name.strip(),
                 "email": email,
                 "job_title": job_title.strip() if job_title else "",
+                "grade": grade.strip() if grade else "",
+                "location": location.strip() if location else "",
                 "department": department.strip() if department else "",
-                "team": team.strip() if team else "",
                 "skills": skills.strip() if skills else "",
-                "experience": experience.strip() if experience else "",
+                "help": help.strip() if help else "",
             }
 
             new_profile = pd.DataFrame([new_profile_data])
@@ -203,6 +214,7 @@ class PeopleFinder:
         """
 
         modelId = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+        #modelId="us.anthropic.claude-3-5-haiku-20241022-v1:0"
         accept = "application/json"
         contentType = "application/json"
         body = json.dumps(
