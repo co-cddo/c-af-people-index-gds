@@ -4,10 +4,8 @@ from people_finder_chromadb import PeopleFinder
 
 def search_profile_interface(finder: PeopleFinder) -> gr.Blocks:
     with gr.Blocks() as interface:
-        gr.Markdown(
-            "Search for people based on their skills, experience, and expertise."
-        )
         search_input = gr.Textbox(
+            label= "Search for people based on their skills, experience, and expertise.",
             lines=2,
             placeholder="Enter your search query (e.g., 'Looking for people with experience in data science and workforce analytics')",
         )
@@ -38,12 +36,12 @@ def search_profile_interface(finder: PeopleFinder) -> gr.Blocks:
         gr.Examples(
             examples=[
                 [
-                    "Looking for people who have worked on workforce commission data with skills in data science and analysis"
+                    "I am looking for someone with expertise in style guides and accessibility"
                 ],
                 [
-                    "Need someone with project management experience in the IT department"
+                    "I need help in healthcare analytics and data governance"
                 ],
-                ["Looking for team leads with experience in agile methodologies"],
+                ["I want to find someone with expertise in policy research and modelling"],
             ],
             inputs=search_input,
         )

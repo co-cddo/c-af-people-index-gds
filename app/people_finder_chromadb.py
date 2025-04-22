@@ -214,6 +214,7 @@ class PeopleFinder:
         """
 
         modelId = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+        #modelId="us.anthropic.claude-3-5-haiku-20241022-v1:0"
         accept = "application/json"
         contentType = "application/json"
         body = json.dumps(
